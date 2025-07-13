@@ -1,0 +1,11 @@
+﻿<ng-container *transloco="let t">
+
+    <vehicle-base-details
+    [panelTitle]="t('Vehicle')"
+    [formGroup]="formGroup" 
+    [vehicleFormGroup]="vehicleFormGroup" 
+    (onSave)="onSave()"
+    [getCrudMenuForOrderedData]="getCrudMenuForOrderedData"
+    />
+
+</ng-container>

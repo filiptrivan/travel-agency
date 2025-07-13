@@ -1,0 +1,11 @@
+﻿<ng-container *transloco="let t">
+
+    <trip-base-details
+    [panelTitle]="t('Trip')"
+    [formGroup]="formGroup" 
+    [tripFormGroup]="tripFormGroup" 
+    (onSave)="onSave()"
+    [getCrudMenuForOrderedData]="getCrudMenuForOrderedData"
+    />
+
+</ng-container>

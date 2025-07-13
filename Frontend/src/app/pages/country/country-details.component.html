@@ -1,0 +1,11 @@
+﻿<ng-container *transloco="let t">
+
+    <country-base-details
+    [panelTitle]="t('Country')"
+    [formGroup]="formGroup" 
+    [countryFormGroup]="countryFormGroup" 
+    (onSave)="onSave()"
+    [getCrudMenuForOrderedData]="getCrudMenuForOrderedData"
+    />
+
+</ng-container>

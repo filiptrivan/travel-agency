@@ -1,0 +1,34 @@
+
+export enum BusinessPermissionCodes
+{
+    ReadCountry = "ReadCountry",
+	UpdateCountry = "UpdateCountry",
+	InsertCountry = "InsertCountry",
+	DeleteCountry = "DeleteCountry",
+	ReadCountryTrip = "ReadCountryTrip",
+	UpdateCountryTrip = "UpdateCountryTrip",
+	InsertCountryTrip = "InsertCountryTrip",
+	DeleteCountryTrip = "DeleteCountryTrip",
+	ReadNotification = "ReadNotification",
+	UpdateNotification = "UpdateNotification",
+	InsertNotification = "InsertNotification",
+	DeleteNotification = "DeleteNotification",
+	ReadTrip = "ReadTrip",
+	UpdateTrip = "UpdateTrip",
+	InsertTrip = "InsertTrip",
+	DeleteTrip = "DeleteTrip",
+	ReadUser = "ReadUser",
+	UpdateUser = "UpdateUser",
+	InsertUser = "InsertUser",
+	DeleteUser = "DeleteUser",
+	ReadUserNotification = "ReadUserNotification",
+	UpdateUserNotification = "UpdateUserNotification",
+	InsertUserNotification = "InsertUserNotification",
+	DeleteUserNotification = "DeleteUserNotification",
+	ReadVehicle = "ReadVehicle",
+	UpdateVehicle = "UpdateVehicle",
+	InsertVehicle = "InsertVehicle",
+	DeleteVehicle = "DeleteVehicle",
+}
+
+
