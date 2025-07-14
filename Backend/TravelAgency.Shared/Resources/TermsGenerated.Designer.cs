@@ -61,6 +61,42 @@ namespace TravelAgency.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Birth Date.
+        /// </summary>
+        public static string BirthDate {
+            get {
+                return ResourceManager.GetString("BirthDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Citizen {
+            get {
+                return ResourceManager.GetString("Citizen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CitizenExcelExportName {
+            get {
+                return ResourceManager.GetString("CitizenExcelExportName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CitizenList {
+            get {
+                return ResourceManager.GetString("CitizenList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string Code {
@@ -435,15 +471,6 @@ namespace TravelAgency.Shared.Resources {
         public static string Roles {
             get {
                 return ResourceManager.GetString("Roles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Should Pay Trip Fee.
-        /// </summary>
-        public static string ShouldPayTripFee {
-            get {
-                return ResourceManager.GetString("ShouldPayTripFee", resourceCulture);
             }
         }
         

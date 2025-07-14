@@ -15,6 +15,17 @@ export class ValidatorServiceGenerated {
 
     setValidator = (formControl: SpiderlyFormControl, className: string): SpiderlyValidatorFn => {
         switch(formControl.label + className){
+            case 'jmbgCitizen':
+                return this.jmbgCitizenValidator(formControl);
+            case 'passportNumberCitizen':
+                return this.passportNumberCitizenValidator(formControl);
+            case 'versionCitizen':
+                return this.versionCitizenValidator(formControl);
+            case 'createdAtCitizen':
+                return this.createdAtCitizenValidator(formControl);
+            case 'modifiedAtCitizen':
+                return this.modifiedAtCitizenValidator(formControl);
+
             case 'nameCountry':
                 return this.nameCountryValidator(formControl);
             case 'versionCountry':
@@ -113,6 +124,96 @@ export class ValidatorServiceGenerated {
                 return null;
         }
     }
+
+    jmbgCitizenValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+            const length = 13;
+            const stringSingleLengthRule = (value?.length == length) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = notEmptyRule && stringSingleLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmptySingleLength', {length}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    passportNumberCitizenValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+            const length = 9;
+            const stringSingleLengthRule = (value?.length == length) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = notEmptyRule && stringSingleLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmptySingleLength', {length}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    versionCitizenValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    createdAtCitizenValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+        control.updateValueAndValidity(); // It's necessary only for Date Angular type
+        return validator;
+    }
+
+    modifiedAtCitizenValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+        control.updateValueAndValidity(); // It's necessary only for Date Angular type
+        return validator;
+    }
+
 
     nameCountryValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
@@ -672,13 +773,12 @@ export class ValidatorServiceGenerated {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
-            const min = 1;
-            const max = 13;
-            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+            const length = 13;
+            const stringSingleLengthRule = (value?.length == length) || (typeof value === 'undefined' || value === null || value === '');
 
-            const valid = stringLengthRule;
+            const valid = stringSingleLengthRule;
 
-            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
+            return valid ? null : { _ : this.translocoService.translate('SingleLength', {length}) };
         };
 
         control.validator = validator;
@@ -690,13 +790,12 @@ export class ValidatorServiceGenerated {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
-            const min = 1;
-            const max = 10;
-            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+            const length = 9;
+            const stringSingleLengthRule = (value?.length == length) || (typeof value === 'undefined' || value === null || value === '');
 
-            const valid = stringLengthRule;
+            const valid = stringSingleLengthRule;
 
-            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
+            return valid ? null : { _ : this.translocoService.translate('SingleLength', {length}) };
         };
 
         control.validator = validator;

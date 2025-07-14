@@ -13,7 +13,216 @@ import { combineLatest, firstValueFrom, forkJoin, map, Observable, of, Subscript
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth/auth.service';
 import { SpiderlyControlsModule, CardSkeletonComponent, IndexCardComponent, IsAuthorizedForSaveEvent, SpiderlyDataTableComponent, SpiderlyFormArray, BaseEntity, LastMenuIconIndexClicked, SpiderlyFormGroup, SpiderlyButton, nameof, BaseFormService, getControl, Column, Filter, LazyLoadSelectedIdsResult, AllClickEvent, SpiderlyFileSelectEvent, getPrimengDropdownNamebookOptions, PrimengOption, SpiderlyFormControl, getPrimengAutocompleteNamebookOptions } from 'spiderly';
-import { Notification, NotificationSaveBody, Country, CountryTrip, Trip, User, UserNotification, Vehicle, CountrySaveBody, CountryTripSaveBody, TripSaveBody, UserSaveBody, UserNotificationSaveBody, VehicleSaveBody } from '../../entities/business-entities.generated';
+import { Notification, NotificationSaveBody, Citizen, Country, CountryTrip, Trip, User, UserNotification, Vehicle, CitizenSaveBody, CountrySaveBody, CountryTripSaveBody, TripSaveBody, UserSaveBody, UserNotificationSaveBody, VehicleSaveBody } from '../../entities/business-entities.generated';
+
+@Component({
+    selector: 'citizen-base-details',
+    template: `
+<ng-container *transloco="let t">
+    <spiderly-panel [isFirstMultiplePanel]="isFirstMultiplePanel" [isMiddleMultiplePanel]="isMiddleMultiplePanel" [isLastMultiplePanel]="isLastMultiplePanel" [showPanelHeader]="showPanelHeader" >
+        <panel-header [title]="panelTitle" [showBigTitle]="showBigPanelTitle" [icon]="panelIcon"></panel-header>
+
+        <panel-body>
+            @defer (when loading === false) {
+                <form class="grid">
+                    <ng-content select="[BEFORE]"></ng-content>
+                    <div *ngIf="showJmbgForCitizen" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('jmbg', citizenFormGroup)"></spiderly-textbox>
+                    </div>
+                    <div *ngIf="showPassportNumberForCitizen" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('passportNumber', citizenFormGroup)"></spiderly-textbox>
+                    </div>
+                    <ng-content select="[AFTER]"></ng-content>
+                </form>
+            } @placeholder {
+                <card-skeleton [height]="502"></card-skeleton>
+            }
+        </panel-body>
+
+        <panel-footer>
+            <spiderly-button [disabled]="!isAuthorizedForSave" (onClick)="save()" [label]="t('Save')" icon="pi pi-save"></spiderly-button>
+            @for (button of additionalButtons; track button.label) {
+                <spiderly-button (onClick)="button.onClick()" [disabled]="button.disabled" [label]="button.label" [icon]="button.icon"></spiderly-button>
+            }
+            <return-button *ngIf="showReturnButton" ></return-button>
+        </panel-footer>
+    </spiderly-panel>
+</ng-container>
+    `,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SpiderlyControlsModule,
+        TranslocoDirective,
+        CardSkeletonComponent,
+        IndexCardComponent,
+        SpiderlyDataTableComponent,
+    ]
+})
+export class CitizenBaseDetailsComponent {
+    @Output() onSave = new EventEmitter<void>();
+    @Output() onAfterFormGroupInit = new EventEmitter<void>();
+    @Input() getCrudMenuForOrderedData: (formArray: SpiderlyFormArray, modelConstructor: BaseEntity, lastMenuIconIndexClicked: LastMenuIconIndexClicked, adjustFormArrayManually: boolean) => MenuItem[];
+    @Input() formGroup: SpiderlyFormGroup;
+    @Input() citizenFormGroup: SpiderlyFormGroup<Citizen>;
+    @Input() additionalButtons: SpiderlyButton[] = [];
+    @Input() isFirstMultiplePanel: boolean = false;
+    @Input() isMiddleMultiplePanel: boolean = false;
+    @Input() isLastMultiplePanel: boolean = false;
+    @Input() showPanelHeader: boolean = true;
+    @Input() panelTitle: string;
+    @Input() showBigPanelTitle: boolean = true;
+    @Input() panelIcon: string;
+    @Input() showReturnButton: boolean = true;
+    authorizationForSaveSubscription: Subscription;
+    @Input() authorizedForSaveObservable: () => Observable<boolean> = () => of(true);
+    isAuthorizedForSave: boolean = true;
+    @Output() onIsAuthorizedForSaveChange = new EventEmitter<IsAuthorizedForSaveEvent>(); 
+
+    modelId: number;
+    loading: boolean = true;
+
+    citizenSaveBodyName: string = nameof<CitizenSaveBody>('citizenDTO');
+
+
+
+
+
+
+
+
+
+    @Input() showJmbgForCitizen = true;
+    @Input() showPassportNumberForCitizen = true;
+
+
+
+
+    constructor(
+        private apiService: ApiService,
+        private route: ActivatedRoute,
+        private baseFormService: BaseFormService,
+        private validatorService: ValidatorService,
+        private translateLabelsService: TranslateLabelsService,
+        private translocoService: TranslocoService,
+        private authService: AuthService,
+    ) {}
+
+    ngOnInit(){
+        this.formGroup.initSaveBody = () => { 
+            let saveBody = new CitizenSaveBody();
+            saveBody.citizenDTO = this.citizenFormGroup.getRawValue();
+
+
+
+
+            return saveBody;
+        }
+
+        this.formGroup.saveObservableMethod = this.apiService.saveCitizen;
+        this.formGroup.mainDTOName = this.citizenSaveBodyName;
+
+        this.route.params.subscribe(async (params) => {
+            this.modelId = params['id'];
+
+
+
+
+            if(this.modelId > 0){
+                forkJoin({
+                    mainUIFormDTO: this.apiService.getCitizenMainUIFormDTO(this.modelId),
+                })
+                .subscribe(({ mainUIFormDTO }) => {
+                    this.initCitizenFormGroup(new Citizen(mainUIFormDTO.citizenDTO));
+
+
+
+                    this.authorizationForSaveSubscription = this.handleAuthorizationForSave().subscribe();
+                    this.loading = false;
+                });
+            }
+            else{
+                this.initCitizenFormGroup(new Citizen({id: 0}));
+
+                this.authorizationForSaveSubscription = this.handleAuthorizationForSave().subscribe();
+                this.loading = false;
+            }
+        });
+    }
+
+    initCitizenFormGroup(citizen: Citizen) {
+        this.baseFormService.addFormGroup<Citizen>(
+            this.citizenFormGroup, 
+            this.formGroup, 
+            citizen, 
+            this.citizenSaveBodyName,
+            ['createdAt', 'modifiedAt']
+        );
+        this.citizenFormGroup.mainDTOName = this.citizenSaveBodyName;
+
+        this.onAfterFormGroupInit.next();
+    }
+
+    handleAuthorizationForSave = () => {
+        return combineLatest([this.authService.currentUserPermissionCodes$, this.authorizedForSaveObservable()]).pipe(
+            map(([currentUserPermissionCodes, isAuthorizedForSave]) => {
+                if (currentUserPermissionCodes != null && isAuthorizedForSave != null) {
+                    this.isAuthorizedForSave =
+
+                        (currentUserPermissionCodes.includes('InsertCitizen') && this.modelId <= 0) || 
+                        (currentUserPermissionCodes.includes('UpdateCitizen') && this.modelId > 0) ||
+                        isAuthorizedForSave;
+
+                    if (this.isAuthorizedForSave) { 
+                        this.citizenFormGroup.controls.jmbg.enable();
+                        this.citizenFormGroup.controls.passportNumber.enable();
+
+                    }
+                    else{
+                        this.citizenFormGroup.controls.jmbg.disable();
+                        this.citizenFormGroup.controls.passportNumber.disable();
+
+                    }
+
+                    this.onIsAuthorizedForSaveChange.next(new IsAuthorizedForSaveEvent({
+                        isAuthorizedForSave: this.isAuthorizedForSave, 
+                        currentUserPermissionCodes: currentUserPermissionCodes
+                    })); 
+                }
+            })
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+    control(formControlName: string, formGroup: SpiderlyFormGroup){
+        return getControl(formControlName, formGroup);
+    }
+
+    getFormArrayGroups<T>(formArray: SpiderlyFormArray): SpiderlyFormGroup<T>[]{
+        return this.baseFormService.getFormArrayGroups<T>(formArray);
+    }
+
+    save(){
+        this.onSave.next();
+    }
+
+	ngOnDestroy(){
+        if (this.authorizationForSaveSubscription) {
+            this.authorizationForSaveSubscription.unsubscribe();
+        }
+    }
+
+}
 
 @Component({
     selector: 'country-base-details',
@@ -490,13 +699,10 @@ export class NotificationBaseDetailsComponent {
                     <div *ngIf="showExitDateForTrip" class="col-12 md:col-6">
                         <spiderly-calendar [control]="control('exitDate', tripFormGroup)" [showTime]="showTimeOnExitDateForTrip"></spiderly-calendar>
                     </div>
-                    <div *ngIf="showShouldPayTripFeeForTrip" class="col-12 md:col-6">
-                        <spiderly-checkbox [control]="control('shouldPayTripFee', tripFormGroup)" (onChange)="onShouldPayTripFeeForTripChange.next($event)"></spiderly-checkbox>
-                    </div>
                     <div *ngIf="showUserForTrip" class="col-12 md:col-6">
                         <spiderly-autocomplete [control]="control('userId', tripFormGroup)" [options]="userOptionsForTrip" [displayName]="tripFormGroup.controls.userDisplayName.getRawValue()" (onTextInput)="searchUserForTrip($event)"></spiderly-autocomplete>
                     </div>
-                    <div *ngIf="showVehicleForTrip" class="col-12">
+                    <div *ngIf="showVehicleForTrip" class="col-12 md:col-6">
                         <spiderly-autocomplete [control]="control('vehicleId', tripFormGroup)" [options]="vehicleOptionsForTrip" [displayName]="tripFormGroup.controls.vehicleDisplayName.getRawValue()" (onTextInput)="searchVehicleForTrip($event)"></spiderly-autocomplete>
                     </div>
                     <div *ngIf="showCountriesForTrip" class="col-12">
@@ -567,7 +773,6 @@ export class TripBaseDetailsComponent {
 
     @Input() showEntryDateForTrip = true;
     @Input() showExitDateForTrip = true;
-    @Input() showShouldPayTripFeeForTrip = true;
     @Input() showUserForTrip = true;
     @Input() showVehicleForTrip = true;
     @Input() showCountriesForTrip = true;
@@ -575,7 +780,6 @@ export class TripBaseDetailsComponent {
 
     @Input() showTimeOnEntryDateForTrip = false;
     @Input() showTimeOnExitDateForTrip = false;
-    @Output() onShouldPayTripFeeForTripChange = new EventEmitter<CheckboxChangeEvent>();
 
 
     constructor(
@@ -660,7 +864,6 @@ export class TripBaseDetailsComponent {
                     if (this.isAuthorizedForSave) { 
                         this.tripFormGroup.controls.entryDate.enable();
                         this.tripFormGroup.controls.exitDate.enable();
-                        this.tripFormGroup.controls.shouldPayTripFee.enable();
                         this.tripFormGroup.controls.userId.enable();
                         this.tripFormGroup.controls.vehicleId.enable();
                         this.selectedCountriesForTrip.enable();
@@ -669,7 +872,6 @@ export class TripBaseDetailsComponent {
                     else{
                         this.tripFormGroup.controls.entryDate.disable();
                         this.tripFormGroup.controls.exitDate.disable();
-                        this.tripFormGroup.controls.shouldPayTripFee.disable();
                         this.tripFormGroup.controls.userId.disable();
                         this.tripFormGroup.controls.vehicleId.disable();
                         this.selectedCountriesForTrip.disable();
@@ -750,6 +952,9 @@ export class TripBaseDetailsComponent {
                     <div *ngIf="showFullNameForUser" class="col-12 md:col-6">
                         <spiderly-textbox [control]="control('fullName', userFormGroup)"></spiderly-textbox>
                     </div>
+                    <div *ngIf="showBirthDateForUser" class="col-12 md:col-6">
+                        <spiderly-calendar [control]="control('birthDate', userFormGroup)" [showTime]="showTimeOnBirthDateForUser"></spiderly-calendar>
+                    </div>
                     <ng-content select="[AFTER]"></ng-content>
                 </form>
             } @placeholder {
@@ -816,10 +1021,12 @@ export class UserBaseDetailsComponent {
     @Input() showJmbgForUser = true;
     @Input() showPassportNumberForUser = true;
     @Input() showFullNameForUser = true;
+    @Input() showBirthDateForUser = true;
 
 
     @Output() onHasLoggedInWithExternalProviderForUserChange = new EventEmitter<CheckboxChangeEvent>();
     @Output() onIsDisabledForUserChange = new EventEmitter<CheckboxChangeEvent>();
+    @Input() showTimeOnBirthDateForUser = false;
 
 
     constructor(
@@ -903,6 +1110,7 @@ export class UserBaseDetailsComponent {
                         this.userFormGroup.controls.jmbg.enable();
                         this.userFormGroup.controls.passportNumber.enable();
                         this.userFormGroup.controls.fullName.enable();
+                        this.userFormGroup.controls.birthDate.enable();
 
                     }
                     else{
@@ -911,6 +1119,7 @@ export class UserBaseDetailsComponent {
                         this.userFormGroup.controls.jmbg.disable();
                         this.userFormGroup.controls.passportNumber.disable();
                         this.userFormGroup.controls.fullName.disable();
+                        this.userFormGroup.controls.birthDate.disable();
 
                     }
 

@@ -49,6 +49,16 @@ const layoutRoutes: Routes = [
         canActivate: [AuthGuard],
     },
     {
+        path: 'administration/citizens',
+        loadComponent: () => import('./pages/citizen/citizen-list.component').then(c => c.CitizenListComponent),
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'administration/citizens/:id',
+        loadComponent: () => import('./pages/citizen/citizen-details.component').then(c => c.CitizenDetailsComponent),
+        canActivate: [AuthGuard],
+    },
+    {
         path: 'administration/roles',
         loadComponent: () => import('./pages/administration/role/role-list.component').then(c => c.RoleListComponent),
         canActivate: [AuthGuard],

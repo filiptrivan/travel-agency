@@ -97,6 +97,12 @@ export class LayoutComponent {
                                 routerLink: [`/${this.config.administrationSlug}/vehicles`],
                                 // I deleted the 'hasPermission' check because it's not important in this simple app
                             },
+                            {
+                                label: 'Citizens',
+                                icon: 'pi pi-fw pi-address-book', // This is the icon which will be shown inside the side menu
+                                routerLink: [`/${this.config.administrationSlug}/citizens`],
+                                // I deleted the 'hasPermission' check because it's not important in this simple app
+                            },
                         ]
                     },
                 ]

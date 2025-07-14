@@ -51,13 +51,15 @@ export class TripDetailsComponent extends BaseFormCopy implements OnInit {
         })
         .subscribe(({ user, countries }) => {
             const daysStaying = (this.tripFormGroup.controls.exitDate.value.getTime() - this.tripFormGroup.controls.entryDate.value.getTime()) / (1000 * 60 * 60 * 24);
+            const userYearsOld = Math.floor((new Date().getTime() - new Date(user.birthDate).getTime()) / (1000 * 60 * 60 * 24 * 365.25));
+            const shouldPayTripFee = userYearsOld > 18 && userYearsOld < 70;
             const text = `Full Name: ${user.fullName}
 JMBG: ${user.jmbg}
 Passport Number: ${user.passportNumber}
 Countries: ${toCommaSeparatedString(countries.map(x => x.displayName))}
 Entry Date: ${this.tripFormGroup.controls.entryDate.value}
 Expected Number of Days Staying: ${daysStaying}
-Should Pay The Trip Fee: ${this.tripFormGroup.controls.shouldPayTripFee.value ?? false}
+Should Pay The Trip Fee: ${shouldPayTripFee}
 `
             let blob = new Blob([
                 text

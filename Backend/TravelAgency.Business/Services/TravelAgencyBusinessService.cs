@@ -55,6 +55,21 @@ namespace TravelAgency.Business.Services
         {
             await _context.WithTransactionAsync(async () =>
             {
+                if (
+                    userSaveBodyDTO.UserDTO.Jmbg != null ||
+                    userSaveBodyDTO.UserDTO.PassportNumber != null
+                )
+                {
+                    bool isCitizen = await _context.DbSet<Citizen>()
+                        .AnyAsync(x =>
+                            x.Jmbg == userSaveBodyDTO.UserDTO.Jmbg &&
+                            x.PassportNumber == userSaveBodyDTO.UserDTO.PassportNumber
+                        );
+
+                    if (!isCitizen)
+                        throw new BusinessException("You can't save the user that is not a citizen of this country.");
+                }
+
                 if (userSaveBodyDTO.UserDTO.Id <= 0)
                     throw new HackerException("You can't add new user.");
 
@@ -203,6 +218,46 @@ namespace TravelAgency.Business.Services
             });
 
             return result;
+        }
+
+        #endregion
+
+        #region Trip
+
+        public override Task<TripSaveBodyDTO> SaveTripAndReturnSaveBodyDTO(TripSaveBodyDTO saveBodyDTO, bool authorizeUpdate, bool authorizeInsert)
+        {
+            if (saveBodyDTO.TripDTO.EntryDate < DateTime.Now)
+                throw new BusinessException("Entry date can't be before now.");
+
+            if (saveBodyDTO.TripDTO.ExitDate < saveBodyDTO.TripDTO.EntryDate)
+                throw new BusinessException("Exit date can't be before entry date.");
+
+            int daysOnTrip = (saveBodyDTO.TripDTO.ExitDate.Value - saveBodyDTO.TripDTO.EntryDate.Value).Days;
+            if (daysOnTrip > 90)
+                throw new BusinessException("You can't go on a trip longer than 90 days.");
+
+            return base.SaveTripAndReturnSaveBodyDTO(saveBodyDTO, authorizeUpdate, authorizeInsert);
+        }
+
+        protected override async Task OnBeforeSaveTripAndReturnSaveBodyDTO(TripSaveBodyDTO saveBodyDTO)
+        {
+            bool hasTripsInSameCountryInSamePeriod = await _context.DbSet<Trip>()
+                .Where(x =>
+                    x.Id != saveBodyDTO.TripDTO.Id &&
+                    x.User.Id == saveBodyDTO.TripDTO.UserId &&
+                    ((
+                        saveBodyDTO.TripDTO.EntryDate >= x.EntryDate &&
+                        saveBodyDTO.TripDTO.EntryDate <= x.ExitDate
+                    ) ||
+                    (
+                        saveBodyDTO.TripDTO.ExitDate >= x.EntryDate &&
+                        saveBodyDTO.TripDTO.ExitDate <= x.ExitDate
+                    ))
+                )
+                .AnyAsync();
+
+            if (hasTripsInSameCountryInSamePeriod)
+                throw new BusinessException("You can't go into same country in the same period.");
         }
 
         #endregion

@@ -5,6 +5,9 @@ import { ApiSecurityService, Filter, PaginatedResult, Namebook, Codebook, LazyLo
 import { ConfigService } from '../config.service';
 import { Notification } from '../../entities/business-entities.generated';
 import { NotificationSaveBody } from '../../entities/business-entities.generated';
+import { Citizen } from '../../entities/business-entities.generated';
+import { CitizenSaveBody } from '../../entities/business-entities.generated';
+import { CitizenMainUIForm } from '../../entities/business-entities.generated';
 import { Country } from '../../entities/business-entities.generated';
 import { CountrySaveBody } from '../../entities/business-entities.generated';
 import { CountryMainUIForm } from '../../entities/business-entities.generated';
@@ -279,6 +282,45 @@ export class ApiGeneratedService extends ApiSecurityService {
     }
 
 
+
+
+    getPaginatedCitizenList = (filterDTO: Filter): Observable<PaginatedResult<Citizen>> => { 
+        return this.http.post<PaginatedResult<Citizen>>(`${this.config.apiUrl}/Citizen/GetPaginatedCitizenList`, filterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportCitizenListToExcel = (filterDTO: Filter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Citizen/ExportCitizenListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getCitizenList = (): Observable<Citizen[]> => { 
+        return this.http.get<Citizen[]>(`${this.config.apiUrl}/Citizen/GetCitizenList`, this.config.httpOptions);
+    }
+
+    getCitizenMainUIFormDTO = (id: number): Observable<CitizenMainUIForm> => { 
+        return this.http.get<CitizenMainUIForm>(`${this.config.apiUrl}/Citizen/GetCitizenMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getCitizen = (id: number): Observable<Citizen> => { 
+        return this.http.get<Citizen>(`${this.config.apiUrl}/Citizen/GetCitizen?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+
+
+
+
+
+    saveCitizen = (saveBodyDTO: CitizenSaveBody): Observable<CitizenSaveBody> => { 
+        return this.http.put<CitizenSaveBody>(`${this.config.apiUrl}/Citizen/SaveCitizen`, saveBodyDTO, this.config.httpOptions);
+    }
+
+
+
+    deleteCitizen = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Citizen/DeleteCitizen?id=${id}`, this.config.httpOptions);
+    }
 
 
 }

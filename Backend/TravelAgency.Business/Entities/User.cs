@@ -11,6 +11,8 @@ using System.ComponentModel.DataAnnotations;
 namespace TravelAgency.Business.Entities
 {
     [Index(nameof(Email), IsUnique = true)]
+    [Index(nameof(Jmbg), IsUnique = true)]
+    [Index(nameof(PassportNumber), IsUnique = true)]
     public class User : BusinessObject<long>, IUser
     {
         [UIDoNotGenerate]
@@ -26,14 +28,17 @@ namespace TravelAgency.Business.Entities
         public bool? IsDisabled { get; set; }
 
         // Even if they say that on the trip form we should fill in JMBG, Passport number etc. we will make those fields on the user because those informations never changes
-        [StringLength(13, MinimumLength = 1)]
-        public string Jmbg { get; set; } // Im 99% sure that the problem is because of every upper case.
+        [StringLength(13)]
+        public string Jmbg { get; set; } // I'm 99% sure that the problem is because of every upper case.
 
-        [StringLength(10, MinimumLength = 1)]
+        [StringLength(9)]
         public string PassportNumber { get; set; }
 
         [StringLength(150, MinimumLength = 1)]
         public string FullName { get; set; }
+
+        [TranslateEn("Birth Date")]
+        public DateTime? BirthDate { get; set; }
 
 
         [ExcludeServiceMethodsFromGeneration]

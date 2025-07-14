@@ -1,7 +1,11 @@
 
 export enum BusinessPermissionCodes
 {
-    ReadCountry = "ReadCountry",
+    ReadCitizen = "ReadCitizen",
+	UpdateCitizen = "UpdateCitizen",
+	InsertCitizen = "InsertCitizen",
+	DeleteCitizen = "DeleteCitizen",
+	ReadCountry = "ReadCountry",
 	UpdateCountry = "UpdateCountry",
 	InsertCountry = "InsertCountry",
 	DeleteCountry = "DeleteCountry",

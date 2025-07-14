@@ -2,6 +2,80 @@ import { BaseEntity, Filter, FilterRule, FilterSortMeta, MimeTypes, Namebook } f
 
 
 
+export class Citizen extends BaseEntity
+{
+    jmbg?: string;
+	passportNumber?: string;
+	version?: number;
+	id?: number;
+	createdAt?: Date;
+	modifiedAt?: Date;
+
+    constructor(
+    {
+        jmbg,
+		passportNumber,
+		version,
+		id,
+		createdAt,
+		modifiedAt
+    }:{
+        jmbg?: string;
+		passportNumber?: string;
+		version?: number;
+		id?: number;
+		createdAt?: Date;
+		modifiedAt?: Date;     
+    } = {}
+    ) {
+        super('Citizen'); 
+
+        this.jmbg = jmbg;
+		this.passportNumber = passportNumber;
+		this.version = version;
+		this.id = id;
+		this.createdAt = createdAt;
+		this.modifiedAt = modifiedAt;
+    }
+}
+
+
+export class CitizenSaveBody extends BaseEntity
+{
+    citizenDTO?: Citizen;
+
+    constructor(
+    {
+        citizenDTO
+    }:{
+        citizenDTO?: Citizen;     
+    } = {}
+    ) {
+        super('CitizenSaveBody'); 
+
+        this.citizenDTO = citizenDTO;
+    }
+}
+
+
+export class CitizenMainUIForm extends BaseEntity
+{
+    citizenDTO?: Citizen;
+
+    constructor(
+    {
+        citizenDTO
+    }:{
+        citizenDTO?: Citizen;     
+    } = {}
+    ) {
+        super('CitizenMainUIForm'); 
+
+        this.citizenDTO = citizenDTO;
+    }
+}
+
+
 export class Country extends BaseEntity
 {
     name?: string;
@@ -244,7 +318,6 @@ export class Trip extends BaseEntity
 {
     entryDate?: Date;
 	exitDate?: Date;
-	shouldPayTripFee?: boolean;
 	userDisplayName?: string;
 	userId?: number;
 	vehicleDisplayName?: string;
@@ -258,7 +331,6 @@ export class Trip extends BaseEntity
     {
         entryDate,
 		exitDate,
-		shouldPayTripFee,
 		userDisplayName,
 		userId,
 		vehicleDisplayName,
@@ -270,7 +342,6 @@ export class Trip extends BaseEntity
     }:{
         entryDate?: Date;
 		exitDate?: Date;
-		shouldPayTripFee?: boolean;
 		userDisplayName?: string;
 		userId?: number;
 		vehicleDisplayName?: string;
@@ -285,7 +356,6 @@ export class Trip extends BaseEntity
 
         this.entryDate = entryDate;
 		this.exitDate = exitDate;
-		this.shouldPayTripFee = shouldPayTripFee;
 		this.userDisplayName = userDisplayName;
 		this.userId = userId;
 		this.vehicleDisplayName = vehicleDisplayName;
@@ -350,6 +420,7 @@ export class User extends BaseEntity
 	jmbg?: string;
 	passportNumber?: string;
 	fullName?: string;
+	birthDate?: Date;
 	version?: number;
 	id?: number;
 	createdAt?: Date;
@@ -363,6 +434,7 @@ export class User extends BaseEntity
 		jmbg,
 		passportNumber,
 		fullName,
+		birthDate,
 		version,
 		id,
 		createdAt,
@@ -374,6 +446,7 @@ export class User extends BaseEntity
 		jmbg?: string;
 		passportNumber?: string;
 		fullName?: string;
+		birthDate?: Date;
 		version?: number;
 		id?: number;
 		createdAt?: Date;
@@ -388,6 +461,7 @@ export class User extends BaseEntity
 		this.jmbg = jmbg;
 		this.passportNumber = passportNumber;
 		this.fullName = fullName;
+		this.birthDate = birthDate;
 		this.version = version;
 		this.id = id;
 		this.createdAt = createdAt;

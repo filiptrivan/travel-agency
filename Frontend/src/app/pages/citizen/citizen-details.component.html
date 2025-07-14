@@ -1,0 +1,11 @@
+﻿<ng-container *transloco="let t">
+
+    <citizen-base-details
+    [panelTitle]="t('Citizen')"
+    [formGroup]="formGroup" 
+    [citizenFormGroup]="citizenFormGroup" 
+    (onSave)="onSave()"
+    [getCrudMenuForOrderedData]="getCrudMenuForOrderedData"
+    />
+
+</ng-container>

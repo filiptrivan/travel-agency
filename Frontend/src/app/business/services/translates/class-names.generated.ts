@@ -18,6 +18,12 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('AuthResult');
             case 'BusinessObject':
                 return this.translocoService.translate('BusinessObject');
+            case 'Citizen':
+                return this.translocoService.translate('Citizen');
+            case 'CitizenMainUIForm':
+                return this.translocoService.translate('CitizenMainUIForm');
+            case 'CitizenSaveBody':
+                return this.translocoService.translate('CitizenSaveBody');
             case 'Codebook':
                 return this.translocoService.translate('Codebook');
             case 'Country':

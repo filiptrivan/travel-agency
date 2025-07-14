@@ -30,6 +30,12 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('CreatedAt');
             case 'modifiedAt':
                 return this.translocoService.translate('ModifiedAt');
+            case 'jmbg':
+                return this.translocoService.translate('Jmbg');
+            case 'passportNumber':
+                return this.translocoService.translate('PassportNumber');
+            case 'citizenDTO':
+                return this.translocoService.translate('CitizenDTO');
             case 'code':
                 return this.translocoService.translate('Code');
             case 'displayName':
@@ -150,8 +156,6 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('EntryDate');
             case 'exitDate':
                 return this.translocoService.translate('ExitDate');
-            case 'shouldPayTripFee':
-                return this.translocoService.translate('ShouldPayTripFee');
             case 'vehicle':
                 return this.translocoService.translate('Vehicle');
             case 'tripDTO':
@@ -164,12 +168,10 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('HasLoggedInWithExternalProvider');
             case 'isDisabled':
                 return this.translocoService.translate('IsDisabled');
-            case 'jmbg':
-                return this.translocoService.translate('Jmbg');
-            case 'passportNumber':
-                return this.translocoService.translate('PassportNumber');
             case 'fullName':
                 return this.translocoService.translate('FullName');
+            case 'birthDate':
+                return this.translocoService.translate('BirthDate');
             case 'userDTO':
                 return this.translocoService.translate('UserDTO');
             case 'notification':

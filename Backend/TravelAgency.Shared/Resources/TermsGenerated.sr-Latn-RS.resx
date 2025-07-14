@@ -58,6 +58,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Citizen" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CitizenList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CitizenExcelExportName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Jmbg" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PassportNumber" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreatedAt" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ModifiedAt" xml:space="preserve">
+    <value />
+  </data>
   <data name="Country" xml:space="preserve">
     <value />
   </data>
@@ -71,18 +98,6 @@
     <value />
   </data>
   <data name="Trips" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Id" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value />
-  </data>
-  <data name="CreatedAt" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ModifiedAt" xml:space="preserve">
     <value />
   </data>
   <data name="CountryTrip" xml:space="preserve">
@@ -172,9 +187,6 @@
   <data name="ExitDate" xml:space="preserve">
     <value />
   </data>
-  <data name="ShouldPayTripFee" xml:space="preserve">
-    <value />
-  </data>
   <data name="User" xml:space="preserve">
     <value />
   </data>
@@ -199,13 +211,10 @@
   <data name="IsDisabled" xml:space="preserve">
     <value />
   </data>
-  <data name="Jmbg" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PassportNumber" xml:space="preserve">
-    <value />
-  </data>
   <data name="FullName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="BirthDate" xml:space="preserve">
     <value />
   </data>
   <data name="Notifications" xml:space="preserve">

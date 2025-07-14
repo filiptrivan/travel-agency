@@ -23,9 +23,6 @@ namespace TravelAgency.Business.Entities
         [Required]
         public DateTime ExitDate { get; set; }
 
-        [TranslateEn("Should Pay Trip Fee")]
-        public bool? ShouldPayTripFee { get; set; }
-
         // One trip can have only a single user
         [WithMany(nameof(User.Trips))]
         [Required]
@@ -35,7 +32,6 @@ namespace TravelAgency.Business.Entities
 
         [WithMany(nameof(Vehicle.Trips))]
         [Required]
-        [UIControlWidth("col-12")]
         // Do we want to delete the trip when the vehicle gets deleted? No.
         //[SetNull] // We cant make it required and set null at the same time, so we use "no action" by default.
         public virtual Vehicle Vehicle { get; set; }
