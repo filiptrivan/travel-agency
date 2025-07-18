@@ -64,47 +64,6 @@ export class ApiGeneratedService extends ApiSecurityService {
         return this.http.get<User>(`${this.config.apiUrl}/User/GetCurrentUser`, this.config.httpSkipSpinnerOptions);
     }
 
-
-
-    getPaginatedUserList = (filterDTO: Filter): Observable<PaginatedResult<User>> => { 
-        return this.http.post<PaginatedResult<User>>(`${this.config.apiUrl}/User/GetPaginatedUserList`, filterDTO, this.config.httpSkipSpinnerOptions);
-    }
-
-    exportUserListToExcel = (filterDTO: Filter): Observable<any> => { 
-        return this.http.post(`${this.config.apiUrl}/User/ExportUserListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
-    }
-
-    getUserList = (): Observable<User[]> => { 
-        return this.http.get<User[]>(`${this.config.apiUrl}/User/GetUserList`, this.config.httpOptions);
-    }
-
-    getUserMainUIFormDTO = (id: number): Observable<UserMainUIForm> => { 
-        return this.http.get<UserMainUIForm>(`${this.config.apiUrl}/User/GetUserMainUIFormDTO?id=${id}`, this.config.httpOptions);
-    }
-
-    getUser = (id: number): Observable<User> => { 
-        return this.http.get<User>(`${this.config.apiUrl}/User/GetUser?id=${id}`, this.config.httpOptions);
-    }
-
-
-
-
-
-
-
-
-
-    saveUser = (saveBodyDTO: UserSaveBody): Observable<UserSaveBody> => { 
-        return this.http.put<UserSaveBody>(`${this.config.apiUrl}/User/SaveUser`, saveBodyDTO, this.config.httpOptions);
-    }
-
-
-
-    deleteUser = (id: number): Observable<any> => { 
-        return this.http.delete(`${this.config.apiUrl}/User/DeleteUser?id=${id}`, this.config.httpOptions);
-    }
-
-
     getPaginatedNotificationList = (filterDTO: Filter): Observable<PaginatedResult<Notification>> => { 
         return this.http.post<PaginatedResult<Notification>>(`${this.config.apiUrl}/Notification/GetPaginatedNotificationList`, filterDTO, this.config.httpSkipSpinnerOptions);
     }
@@ -151,6 +110,88 @@ export class ApiGeneratedService extends ApiSecurityService {
 
     deleteNotification = (id: number): Observable<any> => { 
         return this.http.delete(`${this.config.apiUrl}/Notification/DeleteNotification?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+    getPaginatedCountryList = (filterDTO: Filter): Observable<PaginatedResult<Country>> => { 
+        return this.http.post<PaginatedResult<Country>>(`${this.config.apiUrl}/Country/GetPaginatedCountryList`, filterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportCountryListToExcel = (filterDTO: Filter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Country/ExportCountryListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getCountryList = (): Observable<Country[]> => { 
+        return this.http.get<Country[]>(`${this.config.apiUrl}/Country/GetCountryList`, this.config.httpOptions);
+    }
+
+    getCountryMainUIFormDTO = (id: number): Observable<CountryMainUIForm> => { 
+        return this.http.get<CountryMainUIForm>(`${this.config.apiUrl}/Country/GetCountryMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getCountry = (id: number): Observable<Country> => { 
+        return this.http.get<Country>(`${this.config.apiUrl}/Country/GetCountry?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+
+
+
+
+
+    saveCountry = (saveBodyDTO: CountrySaveBody): Observable<CountrySaveBody> => { 
+        return this.http.put<CountrySaveBody>(`${this.config.apiUrl}/Country/SaveCountry`, saveBodyDTO, this.config.httpOptions);
+    }
+
+
+
+    deleteCountry = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Country/DeleteCountry?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+    getPaginatedVehicleList = (filterDTO: Filter): Observable<PaginatedResult<Vehicle>> => { 
+        return this.http.post<PaginatedResult<Vehicle>>(`${this.config.apiUrl}/Vehicle/GetPaginatedVehicleList`, filterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportVehicleListToExcel = (filterDTO: Filter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Vehicle/ExportVehicleListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getVehicleList = (): Observable<Vehicle[]> => { 
+        return this.http.get<Vehicle[]>(`${this.config.apiUrl}/Vehicle/GetVehicleList`, this.config.httpOptions);
+    }
+
+    getVehicleMainUIFormDTO = (id: number): Observable<VehicleMainUIForm> => { 
+        return this.http.get<VehicleMainUIForm>(`${this.config.apiUrl}/Vehicle/GetVehicleMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getVehicle = (id: number): Observable<Vehicle> => { 
+        return this.http.get<Vehicle>(`${this.config.apiUrl}/Vehicle/GetVehicle?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+
+
+
+
+
+    saveVehicle = (saveBodyDTO: VehicleSaveBody): Observable<VehicleSaveBody> => { 
+        return this.http.put<VehicleSaveBody>(`${this.config.apiUrl}/Vehicle/SaveVehicle`, saveBodyDTO, this.config.httpOptions);
+    }
+
+
+
+    deleteVehicle = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Vehicle/DeleteVehicle?id=${id}`, this.config.httpOptions);
     }
 
 
@@ -204,86 +245,6 @@ export class ApiGeneratedService extends ApiSecurityService {
     }
 
 
-    getPaginatedCountryList = (filterDTO: Filter): Observable<PaginatedResult<Country>> => { 
-        return this.http.post<PaginatedResult<Country>>(`${this.config.apiUrl}/Country/GetPaginatedCountryList`, filterDTO, this.config.httpSkipSpinnerOptions);
-    }
-
-    exportCountryListToExcel = (filterDTO: Filter): Observable<any> => { 
-        return this.http.post(`${this.config.apiUrl}/Country/ExportCountryListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
-    }
-
-    getCountryList = (): Observable<Country[]> => { 
-        return this.http.get<Country[]>(`${this.config.apiUrl}/Country/GetCountryList`, this.config.httpOptions);
-    }
-
-    getCountryMainUIFormDTO = (id: number): Observable<CountryMainUIForm> => { 
-        return this.http.get<CountryMainUIForm>(`${this.config.apiUrl}/Country/GetCountryMainUIFormDTO?id=${id}`, this.config.httpOptions);
-    }
-
-    getCountry = (id: number): Observable<Country> => { 
-        return this.http.get<Country>(`${this.config.apiUrl}/Country/GetCountry?id=${id}`, this.config.httpOptions);
-    }
-
-
-
-
-
-
-
-
-
-    saveCountry = (saveBodyDTO: CountrySaveBody): Observable<CountrySaveBody> => { 
-        return this.http.put<CountrySaveBody>(`${this.config.apiUrl}/Country/SaveCountry`, saveBodyDTO, this.config.httpOptions);
-    }
-
-
-
-    deleteCountry = (id: number): Observable<any> => { 
-        return this.http.delete(`${this.config.apiUrl}/Country/DeleteCountry?id=${id}`, this.config.httpOptions);
-    }
-
-
-    getPaginatedVehicleList = (filterDTO: Filter): Observable<PaginatedResult<Vehicle>> => { 
-        return this.http.post<PaginatedResult<Vehicle>>(`${this.config.apiUrl}/Vehicle/GetPaginatedVehicleList`, filterDTO, this.config.httpSkipSpinnerOptions);
-    }
-
-    exportVehicleListToExcel = (filterDTO: Filter): Observable<any> => { 
-        return this.http.post(`${this.config.apiUrl}/Vehicle/ExportVehicleListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
-    }
-
-    getVehicleList = (): Observable<Vehicle[]> => { 
-        return this.http.get<Vehicle[]>(`${this.config.apiUrl}/Vehicle/GetVehicleList`, this.config.httpOptions);
-    }
-
-    getVehicleMainUIFormDTO = (id: number): Observable<VehicleMainUIForm> => { 
-        return this.http.get<VehicleMainUIForm>(`${this.config.apiUrl}/Vehicle/GetVehicleMainUIFormDTO?id=${id}`, this.config.httpOptions);
-    }
-
-    getVehicle = (id: number): Observable<Vehicle> => { 
-        return this.http.get<Vehicle>(`${this.config.apiUrl}/Vehicle/GetVehicle?id=${id}`, this.config.httpOptions);
-    }
-
-
-
-
-
-
-
-
-
-    saveVehicle = (saveBodyDTO: VehicleSaveBody): Observable<VehicleSaveBody> => { 
-        return this.http.put<VehicleSaveBody>(`${this.config.apiUrl}/Vehicle/SaveVehicle`, saveBodyDTO, this.config.httpOptions);
-    }
-
-
-
-    deleteVehicle = (id: number): Observable<any> => { 
-        return this.http.delete(`${this.config.apiUrl}/Vehicle/DeleteVehicle?id=${id}`, this.config.httpOptions);
-    }
-
-
-
-
     getPaginatedCitizenList = (filterDTO: Filter): Observable<PaginatedResult<Citizen>> => { 
         return this.http.post<PaginatedResult<Citizen>>(`${this.config.apiUrl}/Citizen/GetPaginatedCitizenList`, filterDTO, this.config.httpSkipSpinnerOptions);
     }
@@ -320,6 +281,45 @@ export class ApiGeneratedService extends ApiSecurityService {
 
     deleteCitizen = (id: number): Observable<any> => { 
         return this.http.delete(`${this.config.apiUrl}/Citizen/DeleteCitizen?id=${id}`, this.config.httpOptions);
+    }
+
+
+    getPaginatedUserList = (filterDTO: Filter): Observable<PaginatedResult<User>> => { 
+        return this.http.post<PaginatedResult<User>>(`${this.config.apiUrl}/User/GetPaginatedUserList`, filterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportUserListToExcel = (filterDTO: Filter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/User/ExportUserListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getUserList = (): Observable<User[]> => { 
+        return this.http.get<User[]>(`${this.config.apiUrl}/User/GetUserList`, this.config.httpOptions);
+    }
+
+    getUserMainUIFormDTO = (id: number): Observable<UserMainUIForm> => { 
+        return this.http.get<UserMainUIForm>(`${this.config.apiUrl}/User/GetUserMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getUser = (id: number): Observable<User> => { 
+        return this.http.get<User>(`${this.config.apiUrl}/User/GetUser?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+
+
+
+
+
+    saveUser = (saveBodyDTO: UserSaveBody): Observable<UserSaveBody> => { 
+        return this.http.put<UserSaveBody>(`${this.config.apiUrl}/User/SaveUser`, saveBodyDTO, this.config.httpOptions);
+    }
+
+
+
+    deleteUser = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/User/DeleteUser?id=${id}`, this.config.httpOptions);
     }
 
 

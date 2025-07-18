@@ -257,7 +257,7 @@ namespace TravelAgency.Business.Services
                 .AnyAsync();
 
             if (hasTripsInSameCountryInSamePeriod)
-                throw new BusinessException("You can't go into same country in the same period.");
+                throw new BusinessException("You can't travel on multiple trips in the same period.");
         }
 
         #endregion
