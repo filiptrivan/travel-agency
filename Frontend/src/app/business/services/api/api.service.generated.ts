@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiSecurityService, Filter, PaginatedResult, Namebook, Codebook, LazyLoadSelectedIdsResult, VerificationTokenRequest, AuthResult, ExternalProvider } from 'spiderly';
 import { ConfigService } from '../config.service';
-import { Notification } from '../../entities/business-entities.generated';
 import { NotificationSaveBody } from '../../entities/business-entities.generated';
+import { Notification } from '../../entities/business-entities.generated';
 import { Citizen } from '../../entities/business-entities.generated';
 import { CitizenSaveBody } from '../../entities/business-entities.generated';
 import { CitizenMainUIForm } from '../../entities/business-entities.generated';
@@ -66,86 +66,6 @@ export class ApiGeneratedService extends ApiSecurityService {
 
 
 
-
-
-    getPaginatedCountryList = (filterDTO: Filter): Observable<PaginatedResult<Country>> => { 
-        return this.http.post<PaginatedResult<Country>>(`${this.config.apiUrl}/Country/GetPaginatedCountryList`, filterDTO, this.config.httpSkipSpinnerOptions);
-    }
-
-    exportCountryListToExcel = (filterDTO: Filter): Observable<any> => { 
-        return this.http.post(`${this.config.apiUrl}/Country/ExportCountryListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
-    }
-
-    getCountryList = (): Observable<Country[]> => { 
-        return this.http.get<Country[]>(`${this.config.apiUrl}/Country/GetCountryList`, this.config.httpOptions);
-    }
-
-    getCountryMainUIFormDTO = (id: number): Observable<CountryMainUIForm> => { 
-        return this.http.get<CountryMainUIForm>(`${this.config.apiUrl}/Country/GetCountryMainUIFormDTO?id=${id}`, this.config.httpOptions);
-    }
-
-    getCountry = (id: number): Observable<Country> => { 
-        return this.http.get<Country>(`${this.config.apiUrl}/Country/GetCountry?id=${id}`, this.config.httpOptions);
-    }
-
-
-
-
-
-
-
-
-
-    saveCountry = (saveBodyDTO: CountrySaveBody): Observable<CountrySaveBody> => { 
-        return this.http.put<CountrySaveBody>(`${this.config.apiUrl}/Country/SaveCountry`, saveBodyDTO, this.config.httpOptions);
-    }
-
-
-
-    deleteCountry = (id: number): Observable<any> => { 
-        return this.http.delete(`${this.config.apiUrl}/Country/DeleteCountry?id=${id}`, this.config.httpOptions);
-    }
-
-
-    getPaginatedVehicleList = (filterDTO: Filter): Observable<PaginatedResult<Vehicle>> => { 
-        return this.http.post<PaginatedResult<Vehicle>>(`${this.config.apiUrl}/Vehicle/GetPaginatedVehicleList`, filterDTO, this.config.httpSkipSpinnerOptions);
-    }
-
-    exportVehicleListToExcel = (filterDTO: Filter): Observable<any> => { 
-        return this.http.post(`${this.config.apiUrl}/Vehicle/ExportVehicleListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
-    }
-
-    getVehicleList = (): Observable<Vehicle[]> => { 
-        return this.http.get<Vehicle[]>(`${this.config.apiUrl}/Vehicle/GetVehicleList`, this.config.httpOptions);
-    }
-
-    getVehicleMainUIFormDTO = (id: number): Observable<VehicleMainUIForm> => { 
-        return this.http.get<VehicleMainUIForm>(`${this.config.apiUrl}/Vehicle/GetVehicleMainUIFormDTO?id=${id}`, this.config.httpOptions);
-    }
-
-    getVehicle = (id: number): Observable<Vehicle> => { 
-        return this.http.get<Vehicle>(`${this.config.apiUrl}/Vehicle/GetVehicle?id=${id}`, this.config.httpOptions);
-    }
-
-
-
-
-
-
-
-
-
-    saveVehicle = (saveBodyDTO: VehicleSaveBody): Observable<VehicleSaveBody> => { 
-        return this.http.put<VehicleSaveBody>(`${this.config.apiUrl}/Vehicle/SaveVehicle`, saveBodyDTO, this.config.httpOptions);
-    }
-
-
-
-    deleteVehicle = (id: number): Observable<any> => { 
-        return this.http.delete(`${this.config.apiUrl}/Vehicle/DeleteVehicle?id=${id}`, this.config.httpOptions);
-    }
-
-
     getPaginatedCitizenList = (filterDTO: Filter): Observable<PaginatedResult<Citizen>> => { 
         return this.http.post<PaginatedResult<Citizen>>(`${this.config.apiUrl}/Citizen/GetPaginatedCitizenList`, filterDTO, this.config.httpSkipSpinnerOptions);
     }
@@ -182,56 +102,6 @@ export class ApiGeneratedService extends ApiSecurityService {
 
     deleteCitizen = (id: number): Observable<any> => { 
         return this.http.delete(`${this.config.apiUrl}/Citizen/DeleteCitizen?id=${id}`, this.config.httpOptions);
-    }
-
-
-    getPaginatedTripList = (filterDTO: Filter): Observable<PaginatedResult<Trip>> => { 
-        return this.http.post<PaginatedResult<Trip>>(`${this.config.apiUrl}/Trip/GetPaginatedTripList`, filterDTO, this.config.httpSkipSpinnerOptions);
-    }
-
-    exportTripListToExcel = (filterDTO: Filter): Observable<any> => { 
-        return this.http.post(`${this.config.apiUrl}/Trip/ExportTripListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
-    }
-
-    getTripList = (): Observable<Trip[]> => { 
-        return this.http.get<Trip[]>(`${this.config.apiUrl}/Trip/GetTripList`, this.config.httpOptions);
-    }
-
-    getTripMainUIFormDTO = (id: number): Observable<TripMainUIForm> => { 
-        return this.http.get<TripMainUIForm>(`${this.config.apiUrl}/Trip/GetTripMainUIFormDTO?id=${id}`, this.config.httpOptions);
-    }
-
-    getTrip = (id: number): Observable<Trip> => { 
-        return this.http.get<Trip>(`${this.config.apiUrl}/Trip/GetTrip?id=${id}`, this.config.httpOptions);
-    }
-
-    getUserAutocompleteListForTrip = (limit: number, filter: string, tripId?: number): Observable<Namebook[]> => { 
-        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Trip/GetUserAutocompleteListForTrip?limit=${limit}&filter=${filter}&tripId=${tripId}`, this.config.httpSkipSpinnerOptions);
-    }
-    getVehicleAutocompleteListForTrip = (limit: number, filter: string, tripId?: number): Observable<Namebook[]> => { 
-        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Trip/GetVehicleAutocompleteListForTrip?limit=${limit}&filter=${filter}&tripId=${tripId}`, this.config.httpSkipSpinnerOptions);
-    }
-
-
-    getCountriesDropdownListForTrip = (tripId?: number): Observable<Namebook[]> => { 
-        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Trip/GetCountriesDropdownListForTrip?tripId=${tripId}`, this.config.httpSkipSpinnerOptions);
-    }
-
-
-
-
-    getCountriesNamebookListForTrip = (id: number): Observable<Namebook[]> => { 
-        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Trip/GetCountriesNamebookListForTrip?id=${id}`, this.config.httpSkipSpinnerOptions);
-    }
-
-    saveTrip = (saveBodyDTO: TripSaveBody): Observable<TripSaveBody> => { 
-        return this.http.put<TripSaveBody>(`${this.config.apiUrl}/Trip/SaveTrip`, saveBodyDTO, this.config.httpOptions);
-    }
-
-
-
-    deleteTrip = (id: number): Observable<any> => { 
-        return this.http.delete(`${this.config.apiUrl}/Trip/DeleteTrip?id=${id}`, this.config.httpOptions);
     }
 
 
@@ -320,6 +190,136 @@ export class ApiGeneratedService extends ApiSecurityService {
 
     deleteUser = (id: number): Observable<any> => { 
         return this.http.delete(`${this.config.apiUrl}/User/DeleteUser?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+    getPaginatedVehicleList = (filterDTO: Filter): Observable<PaginatedResult<Vehicle>> => { 
+        return this.http.post<PaginatedResult<Vehicle>>(`${this.config.apiUrl}/Vehicle/GetPaginatedVehicleList`, filterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportVehicleListToExcel = (filterDTO: Filter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Vehicle/ExportVehicleListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getVehicleList = (): Observable<Vehicle[]> => { 
+        return this.http.get<Vehicle[]>(`${this.config.apiUrl}/Vehicle/GetVehicleList`, this.config.httpOptions);
+    }
+
+    getVehicleMainUIFormDTO = (id: number): Observable<VehicleMainUIForm> => { 
+        return this.http.get<VehicleMainUIForm>(`${this.config.apiUrl}/Vehicle/GetVehicleMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getVehicle = (id: number): Observable<Vehicle> => { 
+        return this.http.get<Vehicle>(`${this.config.apiUrl}/Vehicle/GetVehicle?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+
+
+
+
+
+    saveVehicle = (saveBodyDTO: VehicleSaveBody): Observable<VehicleSaveBody> => { 
+        return this.http.put<VehicleSaveBody>(`${this.config.apiUrl}/Vehicle/SaveVehicle`, saveBodyDTO, this.config.httpOptions);
+    }
+
+
+
+    deleteVehicle = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Vehicle/DeleteVehicle?id=${id}`, this.config.httpOptions);
+    }
+
+
+    getPaginatedTripList = (filterDTO: Filter): Observable<PaginatedResult<Trip>> => { 
+        return this.http.post<PaginatedResult<Trip>>(`${this.config.apiUrl}/Trip/GetPaginatedTripList`, filterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportTripListToExcel = (filterDTO: Filter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Trip/ExportTripListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getTripList = (): Observable<Trip[]> => { 
+        return this.http.get<Trip[]>(`${this.config.apiUrl}/Trip/GetTripList`, this.config.httpOptions);
+    }
+
+    getTripMainUIFormDTO = (id: number): Observable<TripMainUIForm> => { 
+        return this.http.get<TripMainUIForm>(`${this.config.apiUrl}/Trip/GetTripMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getTrip = (id: number): Observable<Trip> => { 
+        return this.http.get<Trip>(`${this.config.apiUrl}/Trip/GetTrip?id=${id}`, this.config.httpOptions);
+    }
+
+    getUserAutocompleteListForTrip = (limit: number, filter: string, tripId?: number): Observable<Namebook[]> => { 
+        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Trip/GetUserAutocompleteListForTrip?limit=${limit}&filter=${filter}&tripId=${tripId}`, this.config.httpSkipSpinnerOptions);
+    }
+    getVehicleAutocompleteListForTrip = (limit: number, filter: string, tripId?: number): Observable<Namebook[]> => { 
+        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Trip/GetVehicleAutocompleteListForTrip?limit=${limit}&filter=${filter}&tripId=${tripId}`, this.config.httpSkipSpinnerOptions);
+    }
+
+
+    getCountriesDropdownListForTrip = (tripId?: number): Observable<Namebook[]> => { 
+        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Trip/GetCountriesDropdownListForTrip?tripId=${tripId}`, this.config.httpSkipSpinnerOptions);
+    }
+
+
+
+
+    getCountriesNamebookListForTrip = (id: number): Observable<Namebook[]> => { 
+        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Trip/GetCountriesNamebookListForTrip?id=${id}`, this.config.httpSkipSpinnerOptions);
+    }
+
+    saveTrip = (saveBodyDTO: TripSaveBody): Observable<TripSaveBody> => { 
+        return this.http.put<TripSaveBody>(`${this.config.apiUrl}/Trip/SaveTrip`, saveBodyDTO, this.config.httpOptions);
+    }
+
+
+
+    deleteTrip = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Trip/DeleteTrip?id=${id}`, this.config.httpOptions);
+    }
+
+
+    getPaginatedCountryList = (filterDTO: Filter): Observable<PaginatedResult<Country>> => { 
+        return this.http.post<PaginatedResult<Country>>(`${this.config.apiUrl}/Country/GetPaginatedCountryList`, filterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportCountryListToExcel = (filterDTO: Filter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Country/ExportCountryListToExcel`, filterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getCountryList = (): Observable<Country[]> => { 
+        return this.http.get<Country[]>(`${this.config.apiUrl}/Country/GetCountryList`, this.config.httpOptions);
+    }
+
+    getCountryMainUIFormDTO = (id: number): Observable<CountryMainUIForm> => { 
+        return this.http.get<CountryMainUIForm>(`${this.config.apiUrl}/Country/GetCountryMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getCountry = (id: number): Observable<Country> => { 
+        return this.http.get<Country>(`${this.config.apiUrl}/Country/GetCountry?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+
+
+
+
+
+    saveCountry = (saveBodyDTO: CountrySaveBody): Observable<CountrySaveBody> => { 
+        return this.http.put<CountrySaveBody>(`${this.config.apiUrl}/Country/SaveCountry`, saveBodyDTO, this.config.httpOptions);
+    }
+
+
+
+    deleteCountry = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Country/DeleteCountry?id=${id}`, this.config.httpOptions);
     }
 
 
