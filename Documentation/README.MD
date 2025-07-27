@@ -144,7 +144,7 @@ classDiagram
 
 ---
 
-## 3. Detaljna specifikacija REST API-ja
+### 2.5 Detaljna specifikacija REST API-ja
 
 > Sve dostupne metode i njihovu dokumentaciju možete pregledati automatski putem Swagger interfejsa na adresi `https://localhost:44388/swagger/index.html` nakon pokretanja backend-a.
 
@@ -204,7 +204,7 @@ classDiagram
 
 ---
 
-## 4. Opis korišćenih tehnologija
+## 3. Opis korišćenih tehnologija
 
 - **Frontend:** Angular, PrimeNG, Transloco, TypeScript
 - **Backend:** ASP.NET Core WebAPI, Entity Framework Core, LightInject, FluentValidation, Serilog
@@ -214,11 +214,11 @@ classDiagram
 
 ---
 
-## 5. Korisničko uputstvo
+## 4. Korisničko uputstvo
 
 1. **Pokretanje backend-a:**
    - Uđite u `Backend/TravelAgency.WebAPI` i pokrenite: `dotnet run`
-   - API će biti dostupan na `http://localhost:5173/swagger`
+   - API će biti dostupan na `https://localhost:44388/swagger/index.html`
 
 2. **Pokretanje frontend-a:**
    - Uđite u `Frontend` i pokrenite: `npm install` zatim `npm start`
@@ -232,39 +232,108 @@ classDiagram
 
 ---
 
-## 6. Prikaz reprezentativnih delova koda
+## 5. Prikaz reprezentativnih delova koda
 
-Primer Angular komponente za listu putovanja:
-```typescript
-export class TripListComponent implements OnInit {
-    cols: Column<Trip>[];
-    getPaginatedTripListObservableMethod = this.apiService.getPaginatedTripList;
-    exportTripListToExcelObservableMethod = this.apiService.exportTripListToExcel;
-    deleteTripObservableMethod = this.apiService.deleteTrip;
-    // ...
+### Backend – Model, Servis i Kontroler
+
+**Entitet User (model):**
+```csharp
+public class User : BusinessObject<long>, IUser
+{
+    [Required]
+    public string Email { get; set; }
+    public string Jmbg { get; set; }
+    public string PassportNumber { get; set; }
+    public string FullName { get; set; }
+    public DateTime? BirthDate { get; set; }
+    public virtual List<Role> Roles { get; } = new();
+    public virtual List<Notification> Notifications { get; } = new();
+    public virtual List<Trip> Trips { get; } = new();
 }
 ```
 
-Primer backend servisa za slanje notifikacije:
+**Primer poslovne logike (servis):**
 ```csharp
 public async Task SendNotificationEmail(long notificationId, int notificationVersion)
 {
-    await _travelAgencyBusinessService.SendNotificationEmail(notificationId, notificationVersion);
+    await _context.WithTransactionAsync(async () =>
+    {
+        await _authorizationService.AuthorizeAndThrowAsync<User>(BusinessPermissionCodes.UpdateNotification);
+        Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
+        List<string> recipients = notification.Recipients.Select(x => x.Email).ToList();
+        await _emailingService.SendEmailAsync(recipients, notification.Title, notification.EmailBody);
+    });
+}
+```
+
+**Primer API kontrolera:**
+```csharp
+[HttpGet]
+[AuthGuard]
+public async Task<UserDTO> GetCurrentUser()
+{
+    long userId = _authenticationService.GetCurrentUserId();
+    return await _travelAgencyBusinessService.GetUserDTO(userId, false);
 }
 ```
 
 ---
 
-## 7. Link ka GitHub repozitorijumu
+### Frontend – Angular Komponenta i Servis
 
-[GitHub Repository](https://github.com/filiptrivan/travel-agency)
+**Komponenta za prikaz korisnika:**
+```typescript
+export class UserListComponent implements OnInit {
+    cols: Column<User>[];
+    getPaginatedUserListObservableMethod = this.apiService.getPaginatedUserList;
+    exportUserListToExcelObservableMethod = this.apiService.exportUserListToExcel;
+    deleteUserObservableMethod = this.apiService.deleteUser;
+    constructor(private apiService: ApiService, private translocoService: TranslocoService) { }
+    ngOnInit(){
+        this.cols = [
+            {name: this.translocoService.translate('Email'), filterType: 'text', field: 'email'},
+            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
+            {actions:[
+                {name: this.translocoService.translate('Details'), field: 'Details'},
+                {name:  this.translocoService.translate('Delete'), field: 'Delete'},
+            ]},
+        ]
+    }
+}
+```
+
+**Primer frontend servisa za rad sa backend API-jem:**
+```typescript
+getPaginatedTripList = (filterDTO: Filter): Observable<PaginatedResult<Trip>> => { 
+    return this.http.post<PaginatedResult<Trip>>(`${this.config.apiUrl}/Trip/GetPaginatedTripList`, filterDTO, this.config.httpSkipSpinnerOptions);
+}
+```
+
+**Komponenta za rad sa notifikacijama:**
+```typescript
+export class NotificationsViewComponent implements OnInit {
+  currentUserNotifications: PaginatedResult<Notification>;
+  crudMenu: MenuItem[] = [];
+  filter = new Filter<Notification>({ first: 0, rows: 10 });
+  constructor(private apiService: ApiService, private translocoService: TranslocoService, private messageService: SpiderlyMessageService, private layoutService: LayoutService) {}
+  ngOnInit() {
+    this.crudMenu = [
+      {label: this.translocoService.translate('Delete'), command: this.deleteNotificationForCurrentUser, icon: 'pi pi-trash'},
+      {label: this.translocoService.translate('MarkAsRead'), command: this.markNotificationAsReadForCurrentUser, icon: 'pi pi-eye'},
+      {label: this.translocoService.translate('MarkAsUnread'), command: this.markNotificationAsUnreadForCurrentUser, icon: 'pi pi-eye-slash'},
+    ];
+    this.getNotificationsForCurrentUser();
+  }
+  getNotificationsForCurrentUser(){
+    this.apiService.getNotificationsForCurrentUser(this.filter).subscribe((notifications) => {
+      this.currentUserNotifications = notifications;
+    });
+  }
+}
+```
 
 ---
 
-## 8. Pokretanje projekta na lokalnoj mašini
+## 6. Link ka GitHub repozitorijumu
 
-1. Klonirajte repozitorijum:  
-   `git clone https://github.com/filiptrivan/travel-agency.git`
-2. Pokrenite backend (`dotnet run` u `Backend/TravelAgency.WebAPI`)
-3. Pokrenite frontend (`npm install` i `npm start` u `Frontend`)
-4. Pristupite aplikaciji na `http://localhost:4200/` i API-ju na `https://localhost:44388/swagger/index.html`
+[GitHub Repository](https://github.com/filiptrivan/travel-agency)
