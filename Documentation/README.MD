@@ -146,6 +146,8 @@ classDiagram
 
 ## 3. Detaljna specifikacija REST API-ja
 
+> Sve dostupne metode i njihovu dokumentaciju možete pregledati automatski putem Swagger interfejsa na adresi `https://localhost:44388/swagger/index.html` nakon pokretanja backend-a.
+
 ### Primeri endpoint-a
 
 #### UserController
@@ -208,7 +210,7 @@ classDiagram
 - **Backend:** ASP.NET Core WebAPI, Entity Framework Core, LightInject, FluentValidation, Serilog
 - **Baza:** SQL Server
 - **Autentikacija:** JWT (JSON Web Token)
-- **Ostalo:** Azure Blob Storage za fajlove, Docker podrška, Swagger za API dokumentaciju
+- **Ostalo:** Azure Blob Storage za fajlove, Swagger za API dokumentaciju
 
 ---
 
@@ -255,14 +257,14 @@ public async Task SendNotificationEmail(long notificationId, int notificationVer
 
 ## 7. Link ka GitHub repozitorijumu
 
-[GitHub Repository](https://github.com/filip-trivan/travel-agency)
+[GitHub Repository](https://github.com/filiptrivan/travel-agency)
 
 ---
 
 ## 8. Pokretanje projekta na lokalnoj mašini
 
 1. Klonirajte repozitorijum:  
-   `git clone https://github.com/filip-trivan/travel-agency.git`
+   `git clone https://github.com/filiptrivan/travel-agency.git`
 2. Pokrenite backend (`dotnet run` u `Backend/TravelAgency.WebAPI`)
 3. Pokrenite frontend (`npm install` i `npm start` u `Frontend`)
 4. Pristupite aplikaciji na `http://localhost:4200/` i API-ju na `https://localhost:44388/swagger/index.html`
